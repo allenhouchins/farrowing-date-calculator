@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Date Calculator</title>
+  <title>Farrowing Date Calculator</title>
   <style>
     .calculator {
-      max-width: 400px;
+      max-width: 600px;
       margin: 0 auto;
       padding: 20px;
       border: 1px solid #ccc;
@@ -44,10 +44,10 @@
 </head>
 <body>
   <div class="calculator">
-    <h2>Date Calculator</h2>
-    <label for="datepicker">Select a date:</label>
+    <h2>Farrowing Date Calculator</h2>
+    <label for="datepicker">Select breeding date:</label>
     <input type="date" id="datepicker">
-    <button onclick="calculateDate()">Calculate 116 days later</button>
+    <button onclick="calculateDate()">Calculate</button>
     <div id="result"></div>
   </div>
 
@@ -81,7 +81,7 @@
         const year = resultDate.getFullYear();
         
         // Display the result
-        document.getElementById('result').textContent = `116 days later from ${selectedDate.toDateString()} is ${dayOfWeekName}, ${monthName} ${dayOfMonth}, ${year}`;
+        document.getElementById('result').textContent = `The estimated farrowing date is ${dayOfWeekName}, ${monthName} ${dayOfMonth}, ${year}`;
       } else {
         alert('Please select a valid date.');
       }
