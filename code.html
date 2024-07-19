@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farrowing Date Calculator</title>
+  <style>
+    .calculator {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="date"], button {
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h2>Farrowing Date Calculator</h2>
+    <label for="datepicker">Select breeding date:</label>
+    <input type="date" id="datepicker">
+    <button onclick="calculateDate()">Calculate</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set today's date as the default value in the date picker
+      const today = new Date();
+      const year = today.getFullYear();
+      let month = (today.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed, so we add 1
+      let day = today.getDate().toString().padStart(2, '0');
+      const todayFormatted = `${year}-${month}-${day}`;
+      document.getElementById('datepicker').value = todayFormatted;
+    });
+
+    function calculateDate() {
+      // Get the selected date from the date picker
+      const selectedDate = new Date(document.getElementById('datepicker').value);
+      
+      if (!isNaN(selectedDate.getTime())) { // Check if valid date
+        // Calculate 116 days later
+        const resultDate = new Date(selectedDate);
+        resultDate.setDate(resultDate.getDate() + 116);
+        
+        // Format the result date with day of week and month name
+        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        const dayOfWeekName = daysOfWeek[resultDate.getDay()];
+        const monthName = months[resultDate.getMonth()];
+        const dayOfMonth = resultDate.getDate();
+        const year = resultDate.getFullYear();
+        
+        // Display the result
+        document.getElementById('result').textContent = `The estimated farrowing date is ${dayOfWeekName}, ${monthName} ${dayOfMonth}, ${year}`;
+      } else {
+        alert('Please select a valid date.');
+      }
+    }
+  </script>
+</body>
+</html>
