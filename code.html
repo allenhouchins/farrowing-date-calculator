@@ -1,91 +1,653 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Farrowing Date Calculator</title>
-  <style>
-    .calculator {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      text-align: center;
+<!-- 
+  FARROWING CALCULATOR - Ghost HTML Card Embed
+  Inherits your theme's fonts and sizing
+-->
+<style>
+.farrow-calc {
+    font-family: inherit;
+    color: inherit;
+    line-height: inherit;
+    max-width: 100%;
+    padding: 1em 0;
+}
+
+.farrow-calc * {
+    box-sizing: border-box;
+}
+
+.farrow-calc .info-box {
+    background: #f4f7f5;
+    border-left: 4px solid #5d8a66;
+    padding: 1.25em 1.5em;
+    margin-bottom: 2em;
+    border-radius: 0 8px 8px 0;
+}
+
+.farrow-calc .info-box h4 {
+    margin: 0 0 0.35em 0;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #2d3748;
+    font-family: inherit;
+}
+
+.farrow-calc .info-box p {
+    margin: 0;
+    font-size: 1em;
+    color: #4a5568;
+    line-height: 1.5;
+}
+
+.farrow-calc .info-box strong {
+    color: #3d6b47;
+    font-weight: 600;
+}
+
+.farrow-calc .mode-tabs {
+    display: flex;
+    gap: 0.75em;
+    margin-bottom: 1.75em;
+    flex-wrap: wrap;
+}
+
+.farrow-calc .mode-tab {
+    flex: 1;
+    min-width: 160px;
+    padding: 1em 1.25em;
+    font-family: inherit;
+    font-size: 1em;
+    font-weight: 500;
+    border: 2px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.farrow-calc .mode-tab:hover {
+    border-color: #cbd5e1;
+    color: #475569;
+}
+
+.farrow-calc .mode-tab.active {
+    border-color: #5d8a66;
+    background: #f0fdf4;
+    color: #166534;
+}
+
+.farrow-calc .mode-hint {
+    font-size: 0.95em;
+    color: #64748b;
+    margin-bottom: 1.5em;
+    font-style: italic;
+}
+
+.farrow-calc .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5em;
+    margin-bottom: 1.75em;
+}
+
+@media (max-width: 540px) {
+    .farrow-calc .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.25em;
+    }
+}
+
+.farrow-calc .form-group {
+    margin: 0;
+}
+
+.farrow-calc .form-group label {
+    display: block;
+    font-size: 1em;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5em;
+    font-family: inherit;
+}
+
+.farrow-calc .form-group label span {
+    font-weight: 400;
+    color: #9ca3af;
+}
+
+.farrow-calc .form-group input {
+    width: 100%;
+    padding: 0.9em 1.1em;
+    font-family: inherit;
+    font-size: 1em;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    background: #fff;
+    color: #1f2937;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.farrow-calc .form-group input:focus {
+    outline: none;
+    border-color: #5d8a66;
+    box-shadow: 0 0 0 3px rgba(93, 138, 102, 0.2);
+}
+
+.farrow-calc .form-group input::placeholder {
+    color: #9ca3af;
+}
+
+.farrow-calc .calc-btn {
+    width: 100%;
+    padding: 1em 1.5em;
+    font-family: inherit;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #fff;
+    background: #5d8a66;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.farrow-calc .calc-btn:hover {
+    background: #4a7253;
+}
+
+.farrow-calc .calc-btn:active {
+    transform: scale(0.98);
+}
+
+.farrow-calc .results {
+    display: none;
+    margin-top: 2.5em;
+    padding-top: 2em;
+    border-top: 2px solid #e5e7eb;
+}
+
+.farrow-calc .results.show {
+    display: block;
+    animation: farrowFadeIn 0.4s ease;
+}
+
+@keyframes farrowFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.farrow-calc .result-header {
+    text-align: center;
+    padding: 2em;
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+    border-radius: 12px;
+    margin-bottom: 2em;
+}
+
+.farrow-calc .result-sow {
+    font-size: 1.1em;
+    color: #5d8a66;
+    font-weight: 600;
+    margin-bottom: 0.25em;
+}
+
+.farrow-calc .result-label {
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6b7280;
+    margin-bottom: 0.35em;
+}
+
+.farrow-calc .result-date {
+    font-size: 1.75em;
+    font-weight: 700;
+    color: #166534;
+    margin-bottom: 0.25em;
+    line-height: 1.2;
+}
+
+.farrow-calc .result-range {
+    font-size: 1em;
+    color: #6b7280;
+}
+
+.farrow-calc .timeline-title {
+    font-size: 1.25em;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1.25em;
+    font-family: inherit;
+}
+
+.farrow-calc .timeline {
+    position: relative;
+    padding-left: 2em;
+}
+
+.farrow-calc .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    background: linear-gradient(180deg, #5d8a66 0%, #a3c9ac 100%);
+    border-radius: 2px;
+}
+
+.farrow-calc .timeline-item {
+    position: relative;
+    padding-bottom: 1.25em;
+}
+
+.farrow-calc .timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.farrow-calc .timeline-dot {
+    position: absolute;
+    left: -2em;
+    top: 5px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #a3c9ac;
+}
+
+.farrow-calc .timeline-item.highlight .timeline-dot {
+    background: #5d8a66;
+    border-color: #5d8a66;
+}
+
+.farrow-calc .timeline-item.highlight .timeline-content {
+    background: #f0fdf4;
+    margin: -0.6em;
+    padding: 0.6em 0.9em;
+    border-radius: 8px;
+}
+
+.farrow-calc .timeline-date {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 1em;
+}
+
+.farrow-calc .timeline-day {
+    font-size: 0.85em;
+    color: #5d8a66;
+    font-weight: 600;
+    margin-left: 0.35em;
+}
+
+.farrow-calc .timeline-text {
+    color: #6b7280;
+    font-size: 0.95em;
+    margin-top: 0.2em;
+    line-height: 1.4;
+}
+
+.farrow-calc .action-row {
+    display: flex;
+    gap: 0.75em;
+    margin-top: 2em;
+    flex-wrap: wrap;
+}
+
+.farrow-calc .action-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 0.75em 1em;
+    font-family: inherit;
+    font-size: 0.95em;
+    font-weight: 500;
+    color: #4b5563;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.farrow-calc .action-btn:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+}
+
+.farrow-calc .cta-box {
+    margin-top: 2.5em;
+    padding: 1.75em 2em;
+    background: #1f2937;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.farrow-calc .cta-box h4 {
+    margin: 0 0 0.5em 0;
+    font-size: 1.25em;
+    font-weight: 600;
+    color: #fff;
+    font-family: inherit;
+}
+
+.farrow-calc .cta-box p {
+    margin: 0 0 1.25em 0;
+    font-size: 1em;
+    color: #d1d5db;
+    line-height: 1.5;
+}
+
+.farrow-calc .cta-link {
+    display: inline-block;
+    padding: 0.75em 1.5em;
+    font-size: 1em;
+    font-weight: 600;
+    color: #1f2937;
+    background: #fbbf24;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.farrow-calc .cta-link:hover {
+    background: #f59e0b;
+    color: #1f2937;
+}
+
+/* Print-specific styles */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .farrow-calc-print-area,
+    .farrow-calc-print-area * {
+        visibility: visible;
+    }
+    .farrow-calc-print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 2em;
+    }
+    .farrow-calc .action-row,
+    .farrow-calc .cta-box {
+        display: none !important;
+    }
+}
+</style>
+
+<div class="farrow-calc">
+    <div class="info-box">
+        <h4>The 3-3-3 Rule</h4>
+        <p>Pigs have a gestation period of <strong>3 months, 3 weeks, and 3 days</strong> (approximately 114 days). KuneKunes typically farrow between days 112–116.</p>
+    </div>
+
+    <div class="mode-tabs">
+        <button type="button" class="mode-tab active" data-mode="breeding" onclick="setFarrowMode('breeding')">I know the breeding date</button>
+        <button type="button" class="mode-tab" data-mode="target" onclick="setFarrowMode('target')">I have a target due date</button>
+    </div>
+
+    <p class="mode-hint" id="farrowModeHint">Enter when breeding occurred to calculate the expected farrowing date.</p>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="farrowDateInput" id="farrowDateLabel">Breeding Date</label>
+            <input type="date" id="farrowDateInput">
+        </div>
+        <div class="form-group">
+            <label for="farrowSowName">Sow Name <span>(optional)</span></label>
+            <input type="text" id="farrowSowName" placeholder="e.g., Maple">
+        </div>
+    </div>
+
+    <button type="button" class="calc-btn" onclick="calcFarrow()">
+        <span id="farrowBtnText">Calculate Due Date</span>
+    </button>
+
+    <div class="results" id="farrowResults">
+        <div id="farrowPrintArea" class="farrow-calc-print-area">
+            <div class="result-header">
+                <div class="result-sow" id="farrowSowDisplay"></div>
+                <div class="result-label" id="farrowResultLabel">Expected Farrowing Date</div>
+                <div class="result-date" id="farrowDueDate"></div>
+                <div class="result-range" id="farrowRange"></div>
+            </div>
+
+            <h4 class="timeline-title" id="farrowTimelineTitle">Key Milestones</h4>
+            <div class="timeline" id="farrowTimeline"></div>
+        </div>
+
+        <div class="action-row">
+            <button type="button" class="action-btn" onclick="printFarrowResults()">🖨️ Print</button>
+            <button type="button" class="action-btn" onclick="copyFarrowResults()">📋 Copy</button>
+            <button type="button" class="action-btn" onclick="resetFarrowCalc()">↺ Reset</button>
+        </div>
+    </div>
+
+    <div class="cta-box">
+        <h4>Planning Your First Litter?</h4>
+        <p>Check out our registered KuneKune breeding stock from our AKKPS exclusive program.</p>
+        <a href="/available-pigs/" class="cta-link">View Available Pigs →</a>
+    </div>
+</div>
+
+<script>
+(function() {
+    var farrowMode = 'breeding';
+    var lastCalcData = {};
+
+    // Set default date to today in user's local timezone
+    function setDefaultDate() {
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = String(today.getMonth() + 1).padStart(2, '0');
+        var day = String(today.getDate()).padStart(2, '0');
+        document.getElementById('farrowDateInput').value = year + '-' + month + '-' + day;
+    }
+    setDefaultDate();
+
+    window.setFarrowMode = function(mode) {
+        farrowMode = mode;
+        document.querySelectorAll('.farrow-calc .mode-tab').forEach(function(btn) {
+            btn.classList.toggle('active', btn.dataset.mode === mode);
+        });
+        document.getElementById('farrowDateLabel').textContent = mode === 'breeding' ? 'Breeding Date' : 'Target Farrowing Date';
+        document.getElementById('farrowModeHint').textContent = mode === 'breeding' 
+            ? 'Enter when breeding occurred to calculate the expected farrowing date.'
+            : 'Enter your desired farrowing date to find when to breed.';
+        document.getElementById('farrowBtnText').textContent = mode === 'breeding' ? 'Calculate Due Date' : 'Calculate Breeding Date';
+        document.getElementById('farrowResults').classList.remove('show');
+    };
+
+    function fmtDate(d) {
+        return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
 
-    label {
-      display: block;
-      margin-bottom: 10px;
+    function fmtShort(d) {
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
 
-    input[type="date"], button {
-      padding: 8px 12px;
-      margin-bottom: 10px;
-      font-size: 16px;
+    function fmtMedium(d) {
+        return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     }
 
-    button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
+    function addDays(d, n) {
+        var r = new Date(d);
+        r.setDate(r.getDate() + n);
+        return r;
     }
 
-    button:hover {
-      background-color: #45a049;
-    }
+    window.calcFarrow = function() {
+        var val = document.getElementById('farrowDateInput').value;
+        var sow = document.getElementById('farrowSowName').value.trim();
+        if (!val) { alert('Please select a date'); return; }
 
-    #result {
-      font-size: 18px;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <div class="calculator">
-    <h2>Farrowing Date Calculator</h2>
-    <label for="datepicker">Select breeding date:</label>
-    <input type="date" id="datepicker">
-    <button onclick="calculateDate()">Calculate</button>
-    <div id="result"></div>
-  </div>
+        var input = new Date(val + 'T12:00:00');
+        var breed, due;
+        if (farrowMode === 'breeding') {
+            breed = input; due = addDays(input, 114);
+        } else {
+            due = input; breed = addDays(input, -114);
+        }
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Set today's date as the default value in the date picker
-      const today = new Date();
-      const year = today.getFullYear();
-      let month = (today.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed, so we add 1
-      let day = today.getDate().toString().padStart(2, '0');
-      const todayFormatted = `${year}-${month}-${day}`;
-      document.getElementById('datepicker').value = todayFormatted;
-    });
+        var early = addDays(due, -2), late = addDays(due, 2);
 
-    function calculateDate() {
-      // Get the selected date from the date picker
-      const selectedDate = new Date(document.getElementById('datepicker').value);
-      
-      if (!isNaN(selectedDate.getTime())) { // Check if valid date
-        // Calculate 116 days later
-        const resultDate = new Date(selectedDate);
-        resultDate.setDate(resultDate.getDate() + 116);
+        // Store for copy/print
+        lastCalcData = {
+            mode: farrowMode,
+            sow: sow,
+            breedingDate: breed,
+            dueDate: due,
+            earlyDate: early,
+            lateDate: late
+        };
+
+        document.getElementById('farrowSowDisplay').textContent = sow ? 'For ' + sow : '';
+        document.getElementById('farrowResultLabel').textContent = farrowMode === 'breeding' ? 'Expected Farrowing Date' : 'Recommended Breeding Date';
+        document.getElementById('farrowDueDate').textContent = fmtDate(farrowMode === 'breeding' ? due : breed);
+        document.getElementById('farrowRange').textContent = farrowMode === 'breeding'
+            ? 'Expect farrowing ' + fmtShort(early) + ' – ' + fmtShort(late)
+            : 'For farrowing around ' + fmtDate(due);
+
+        document.getElementById('farrowTimelineTitle').textContent = farrowMode === 'breeding' ? 'Key Milestones' : 'Planning Timeline';
+
+        var ms = farrowMode === 'breeding' ? [
+            { d: breed, day: 'Day 0', t: 'Breeding date', h: false },
+            { d: addDays(breed, 21), day: 'Day 21', t: 'Check for return to heat', h: false },
+            { d: addDays(breed, 42), day: 'Day 42', t: 'Second heat check – pregnancy likely confirmed', h: false },
+            { d: addDays(breed, 100), day: 'Day 100', t: 'Begin daily observation for nesting behavior', h: false },
+            { d: addDays(breed, 107), day: 'Day 107', t: 'Move sow to farrowing area', h: true },
+            { d: addDays(breed, 112), day: 'Day 112', t: 'Earliest expected farrowing – be ready!', h: false },
+            { d: due, day: 'Day 114', t: 'Expected farrowing date', h: true },
+            { d: addDays(due, 4), day: 'Day 118', t: 'Latest typical farrowing – consult vet if no signs', h: false }
+        ] : [
+            { d: breed, day: 'Day 0', t: 'Recommended breeding date', h: true },
+            { d: addDays(breed, 21), day: 'Day 21', t: 'First heat check', h: false },
+            { d: addDays(breed, 100), day: 'Day 100', t: 'Begin watching for signs', h: false },
+            { d: addDays(breed, 107), day: 'Day 107', t: 'Move to farrowing area', h: true },
+            { d: due, day: 'Day 114', t: 'Target farrowing date', h: true }
+        ];
+
+        // Store milestones for copy
+        lastCalcData.milestones = ms;
+
+        var html = '';
+        for (var i = 0; i < ms.length; i++) {
+            var m = ms[i];
+            html += '<div class="timeline-item' + (m.h ? ' highlight' : '') + '">' +
+                '<div class="timeline-dot"></div>' +
+                '<div class="timeline-content">' +
+                '<div class="timeline-date">' + fmtShort(m.d) + ' <span class="timeline-day">(' + m.day + ')</span></div>' +
+                '<div class="timeline-text">' + m.t + '</div></div></div>';
+        }
+        document.getElementById('farrowTimeline').innerHTML = html;
+
+        document.getElementById('farrowResults').classList.add('show');
+    };
+
+    window.copyFarrowResults = function() {
+        if (!lastCalcData.dueDate) {
+            alert('Please calculate results first');
+            return;
+        }
+
+        var lines = [];
         
-        // Format the result date with day of week and month name
-        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        // Header
+        lines.push('🐷 KUNEKUNE FARROWING SCHEDULE');
+        lines.push('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         
-        const dayOfWeekName = daysOfWeek[resultDate.getDay()];
-        const monthName = months[resultDate.getMonth()];
-        const dayOfMonth = resultDate.getDate();
-        const year = resultDate.getFullYear();
+        if (lastCalcData.sow) {
+            lines.push('Sow: ' + lastCalcData.sow);
+        }
         
-        // Display the result
-        document.getElementById('result').textContent = `The estimated farrowing date is ${dayOfWeekName}, ${monthName} ${dayOfMonth}, ${year}`;
-      } else {
-        alert('Please select a valid date.');
-      }
-    }
-  </script>
-</body>
-</html>
+        lines.push('');
+        lines.push('Breeding Date: ' + fmtMedium(lastCalcData.breedingDate));
+        lines.push('Expected Due Date: ' + fmtMedium(lastCalcData.dueDate));
+        lines.push('Farrowing Window: ' + fmtShort(lastCalcData.earlyDate) + ' – ' + fmtShort(lastCalcData.lateDate));
+        
+        lines.push('');
+        lines.push('KEY MILESTONES');
+        lines.push('──────────────');
+        
+        for (var i = 0; i < lastCalcData.milestones.length; i++) {
+            var m = lastCalcData.milestones[i];
+            var marker = m.h ? '★' : '•';
+            lines.push(marker + ' ' + fmtShort(m.d) + ' (' + m.day + '): ' + m.t);
+        }
+        
+        lines.push('');
+        lines.push('Generated at allenandemily.com/farrowing-calculator');
+
+        var txt = lines.join('\n');
+        
+        navigator.clipboard.writeText(txt).then(function() { 
+            alert('Copied to clipboard!'); 
+        }).catch(function() {
+            // Fallback for older browsers
+            var textarea = document.createElement('textarea');
+            textarea.value = txt;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('Copied to clipboard!');
+        });
+    };
+
+    window.printFarrowResults = function() {
+        if (!lastCalcData.dueDate) {
+            alert('Please calculate results first');
+            return;
+        }
+
+        // Create a print-friendly window
+        var printWindow = window.open('', '_blank', 'width=600,height=800');
+        
+        var sowLine = lastCalcData.sow ? '<p style="color:#5d8a66;font-weight:600;margin:0 0 0.5em 0;">For ' + lastCalcData.sow + '</p>' : '';
+        
+        var milestonesHtml = '';
+        for (var i = 0; i < lastCalcData.milestones.length; i++) {
+            var m = lastCalcData.milestones[i];
+            var bg = m.h ? 'background:#f0fdf4;padding:0.5em 0.75em;margin:-0.25em -0.5em;border-radius:6px;' : '';
+            milestonesHtml += '<div style="margin-bottom:1em;position:relative;padding-left:1.5em;' + bg + '">' +
+                '<div style="position:absolute;left:0;top:0.3em;width:10px;height:10px;border-radius:50%;background:' + (m.h ? '#5d8a66' : '#fff') + ';border:2px solid ' + (m.h ? '#5d8a66' : '#a3c9ac') + ';"></div>' +
+                '<div style="font-weight:600;">' + fmtShort(m.d) + ' <span style="color:#5d8a66;font-size:0.85em;">(' + m.day + ')</span></div>' +
+                '<div style="color:#6b7280;font-size:0.95em;">' + m.t + '</div>' +
+                '</div>';
+        }
+
+        var html = '<!DOCTYPE html><html><head><title>Farrowing Schedule' + (lastCalcData.sow ? ' - ' + lastCalcData.sow : '') + '</title>' +
+            '<style>body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;padding:2em;max-width:600px;margin:0 auto;color:#1f2937;line-height:1.5;}' +
+            '@media print{body{padding:0;}}</style></head><body>' +
+            '<h1 style="font-size:1.5em;margin:0 0 0.25em 0;color:#1f2937;">🐷 KuneKune Farrowing Schedule</h1>' +
+            '<p style="color:#6b7280;margin:0 0 2em 0;font-size:0.9em;">Generated from allenandemily.com</p>' +
+            '<div style="background:#f0fdf4;border-radius:12px;padding:1.5em;text-align:center;margin-bottom:2em;">' +
+            sowLine +
+            '<p style="font-size:0.8em;text-transform:uppercase;letter-spacing:0.1em;color:#6b7280;margin:0 0 0.25em 0;">Expected Farrowing Date</p>' +
+            '<p style="font-size:1.5em;font-weight:700;color:#166534;margin:0 0 0.25em 0;">' + fmtDate(lastCalcData.dueDate) + '</p>' +
+            '<p style="color:#6b7280;margin:0;">Farrowing window: ' + fmtShort(lastCalcData.earlyDate) + ' – ' + fmtShort(lastCalcData.lateDate) + '</p>' +
+            '</div>' +
+            '<h2 style="font-size:1.1em;margin:0 0 1em 0;">Key Milestones</h2>' +
+            milestonesHtml +
+            '</body></html>';
+
+        printWindow.document.write(html);
+        printWindow.document.close();
+        
+        // Wait for content to load, then print
+        printWindow.onload = function() {
+            printWindow.print();
+        };
+    };
+
+    window.resetFarrowCalc = function() {
+        document.getElementById('farrowSowName').value = '';
+        document.getElementById('farrowResults').classList.remove('show');
+        lastCalcData = {};
+        setDefaultDate();
+    };
+})();
+</script>
