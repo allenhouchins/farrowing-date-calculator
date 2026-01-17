@@ -334,7 +334,7 @@
 .farrow-calc .cta-box p {
     margin: 0 0 1.25em 0;
     font-size: 1em;
-    color: #d1d5db;
+    color: #fff;
     line-height: 1.5;
 }
 
@@ -429,7 +429,7 @@
     <div class="cta-box">
         <h4>Planning Your First Litter?</h4>
         <p>Check out our registered KuneKune breeding stock from our AKKPS exclusive program.</p>
-        <a href="/available-pigs/" class="cta-link">View Available Pigs →</a>
+        <a href="https://www.allenandemily.com/available-pigs/" class="cta-link">View Available Pigs →</a>
     </div>
 </div>
 
@@ -611,12 +611,15 @@
         var milestonesHtml = '';
         for (var i = 0; i < lastCalcData.milestones.length; i++) {
             var m = lastCalcData.milestones[i];
-            var bg = m.h ? 'background:#f0fdf4;padding:0.5em 0.75em;margin:-0.25em -0.5em;border-radius:6px;' : '';
-            milestonesHtml += '<div style="margin-bottom:1em;position:relative;padding-left:1.5em;' + bg + '">' +
-                '<div style="position:absolute;left:0;top:0.3em;width:10px;height:10px;border-radius:50%;background:' + (m.h ? '#5d8a66' : '#fff') + ';border:2px solid ' + (m.h ? '#5d8a66' : '#a3c9ac') + ';"></div>' +
+            var wrapperStyle = m.h ? 'background:#f0fdf4;padding:0.5em 0.75em;border-radius:6px;margin-bottom:0.75em;' : 'margin-bottom:1em;';
+            var dotLeft = m.h ? '0.75em' : '0';
+            var contentPadding = m.h ? '2.25em' : '1.5em';
+            milestonesHtml += '<div style="position:relative;' + wrapperStyle + '">' +
+                '<div style="position:absolute;left:' + dotLeft + ';top:' + (m.h ? '0.85em' : '0.3em') + ';width:10px;height:10px;border-radius:50%;background:' + (m.h ? '#5d8a66' : '#fff') + ';border:2px solid ' + (m.h ? '#5d8a66' : '#a3c9ac') + ';"></div>' +
+                '<div style="padding-left:' + contentPadding + ';">' +
                 '<div style="font-weight:600;">' + fmtShort(m.d) + ' <span style="color:#5d8a66;font-size:0.85em;">(' + m.day + ')</span></div>' +
                 '<div style="color:#6b7280;font-size:0.95em;">' + m.t + '</div>' +
-                '</div>';
+                '</div></div>';
         }
 
         var html = '<!DOCTYPE html><html><head><title>Farrowing Schedule' + (lastCalcData.sow ? ' - ' + lastCalcData.sow : '') + '</title>' +
